@@ -1,0 +1,39 @@
+{
+  "name": "boilerplate-server",
+  "version": "1.0.0",
+  "description": "Boilerplate",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd ./src && cross-env NODE_ENV=production node index.js",
+    "start-dev": "cd ./src && cross-env NODE_ENV=development node index.js",
+    "install-start": "npm run setup && npm start",
+    "install-start-dev": "npm run setup && npm run start-dev",
+    "setup": "npm install",
+    "heroku-postbuild": "cp ./src/env.example.js ./src/env.js"
+  },
+  "author": "PRO FORWARD",
+  "dependencies": {
+    "body-parser": "^1.16.0",
+    "errorhandler": "^1.5.0",
+    "express": "^4.14.0",
+    "express-jwt": "^5.1.0",
+    "express-session": "^1.15.0",
+    "generate-password": "^1.3.0",
+    "google-libphonenumber": "^3.0.9",
+    "jsonwebtoken": "^7.2.1",
+    "lodash": "^4.17.4",
+    "moment": "^2.19.4",
+    "morgan": "^1.7.0",
+    "node-schedule": "^1.2.5",
+    "nodemailer": "^4.4.1",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "password-hash": "latest",
+    "pg": "^6.4.1",
+    "pug": "^2.0.0-rc.4",
+    "sequelize": "^3.30.0"
+  },
+  "devDependencies": {
+    "cross-env": "^3.1.4"
+  }
+}
