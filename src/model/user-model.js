@@ -60,7 +60,8 @@ const MODEL_ATTRIBUTES = {
   department_id: {type: Sequelize.UUID},
   date_of_birth: {type: Sequelize.DATE},
   hire_date: {type: Sequelize.DATE},
-  termination_date: {type: Sequelize.DATE},
+  termination_date: {type: Sequelize.DATE}
+  
 };
 
 const MODEL_OPTIONS = {
