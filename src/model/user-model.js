@@ -61,7 +61,6 @@ const MODEL_ATTRIBUTES = {
   date_of_birth: {type: Sequelize.DATE},
   hire_date: {type: Sequelize.DATE},
   termination_date: {type: Sequelize.DATE}
-  
 };
 
 const MODEL_OPTIONS = {

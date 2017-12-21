@@ -8,6 +8,7 @@ const mailModel = require('./mail-model');
 const confirmationKeyModel = require('./confirmation-key-model');
 const permissionModel = require('./permission-model');
 const roleModel = require('./role-model');
+const departmentModel = require('./department-model');
 
 const database = require('../database');
 const sequelize = database.sequelize;
@@ -34,5 +35,6 @@ module.exports = {
   mailModel,
   confirmationKeyModel,
   permissionModel,
-  roleModel
+  roleModel,
+  departmentModel
 };
