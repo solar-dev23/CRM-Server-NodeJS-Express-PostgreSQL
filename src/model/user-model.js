@@ -77,7 +77,7 @@ const MODEL_OPTIONS = {
 class UserModel extends ContainerModel {
 
   constructor() {
-    super('users', ['id', 'username', 'email', 'firstName', 'lastName', 'displayName', 'active']);
+    super('users', ['id', 'username', 'email', 'firstName', 'lastName', 'displayName', 'active', 'department_id']);
     this.buildModel(MODEL_ATTRIBUTES, MODEL_OPTIONS);
     this.createBelongsToManyAssociation('roles', 'user_roles', 'user_id', roleModel.sequelizeModel, ['id']);
   }
