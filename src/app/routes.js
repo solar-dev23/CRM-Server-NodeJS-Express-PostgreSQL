@@ -29,4 +29,7 @@ module.exports = function (router) {
   router.post('/rest/administration/user/all', userController.loadAll);
   router.post('/rest/administration/user/save', userController.save);
   router.post('/rest/administration/user/remove', userController.remove);
+
+  router.get('/rest/user/one', userController.getOne);
+  router.put('/rest/user', userController.update);
 };

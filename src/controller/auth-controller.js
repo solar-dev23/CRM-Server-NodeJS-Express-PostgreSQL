@@ -49,12 +49,18 @@ module.exports.sendAuthData = function (req, res) {
       permissions: accessCache.getPermissionsByRoleId(role.id)
     };
   });
-  res.status(HTTP_CODE.OK).send({
-    token: req.token,
-    userId: req.user.id,
-    permissions: req.user.permissions,
-    config: {roles}
-  });
+  
+  userModel
+    .findById(req.user.id)
+    .then(user => {
+        res.status(HTTP_CODE.OK).send({
+          token: req.token,
+          userId: req.user.id,
+          permissions: req.user.permissions,
+          config: {roles},
+          userData: user
+        });      
+    })
 };
 
 module.exports.checkAccessTokenValid = function (req, res, next) {

@@ -219,3 +219,36 @@ module.exports.checkAlreadyExist = function (req, res, next) {
     res.status(HTTP_CODES.BAD_REQUEST).send('Incorrect request');
   }
 };
+
+module.exports.getOne = function(req, res, next) {
+  return userModel
+    .findById(req.query.id)
+    .then(user => {
+        if (!user) {
+          return res.status(400).send({
+            message: 'User Not Found',
+          });
+        }
+
+        return res.status(200).send(user)
+    })
+    .catch(error => res.status(400).send(error));
+};
+
+module.exports.update = function(req, res, next) {
+  return userModel
+    .findById(req.body.id)
+    .then(user => {
+        if (!user) {
+          return res.status(404).send({
+            message: 'User Not Found',
+          });
+        }
+
+        return user
+          .update(req.body)
+          .then(() => res.status(200).send(user))
+          .catch(error => res.status(400).send(error));
+    })
+    .catch(error => res.status(400).send(error));
+};
