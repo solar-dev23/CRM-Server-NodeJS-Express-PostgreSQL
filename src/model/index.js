@@ -9,6 +9,8 @@ const confirmationKeyModel = require('./confirmation-key-model');
 const permissionModel = require('./permission-model');
 const roleModel = require('./role-model');
 const departmentModel = require('./department-model');
+const opportunityModel = require('./opportunity-model');
+const statusModel = require('./status-model');
 
 const database = require('../database');
 const sequelize = database.sequelize;
@@ -36,5 +38,7 @@ module.exports = {
   confirmationKeyModel,
   permissionModel,
   roleModel,
-  departmentModel
+  departmentModel,
+  opportunityModel,
+  statusModel
 };

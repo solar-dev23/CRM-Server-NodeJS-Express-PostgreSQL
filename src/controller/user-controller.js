@@ -237,7 +237,7 @@ module.exports.getOne = function(req, res, next) {
 
 module.exports.update = function(req, res, next) {
   return userModel
-    .findById(req.body.id)
+    .findById(req.body.object.id)
     .then(user => {
         if (!user) {
           return res.status(404).send({
@@ -246,7 +246,7 @@ module.exports.update = function(req, res, next) {
         }
 
         return user
-          .update(req.body)
+          .update(req.body.object)
           .then(() => res.status(200).send(user))
           .catch(error => res.status(400).send(error));
     })

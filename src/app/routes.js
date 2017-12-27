@@ -4,6 +4,7 @@ const controller = require('../controller');
 const authController = controller.authController;
 const userController = controller.userController;
 const accessController = controller.accessController;
+const dashboardController = controller.dashboardController;
 
 const core = require('../core');
 const constants = core.constants;
@@ -32,4 +33,7 @@ module.exports = function (router) {
 
   router.get('/rest/user/one', userController.getOne);
   router.put('/rest/user', userController.update);
+
+  router.post('/rest/dashboard/calculate', dashboardController.calculate);
+  router.post('/rest/dashboard/calculate/v2', dashboardController.calculateV2);
 };
