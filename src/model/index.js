@@ -11,6 +11,7 @@ const roleModel = require('./role-model');
 const departmentModel = require('./department-model');
 const opportunityModel = require('./opportunity-model');
 const statusModel = require('./status-model');
+const reminderModel = require('./reminder-model');
 
 const database = require('../database');
 const sequelize = database.sequelize;
@@ -40,5 +41,6 @@ module.exports = {
   roleModel,
   departmentModel,
   opportunityModel,
-  statusModel
+  statusModel,
+  reminderModel
 };

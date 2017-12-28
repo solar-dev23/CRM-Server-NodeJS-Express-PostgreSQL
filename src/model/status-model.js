@@ -7,7 +7,7 @@ const core = require('../core');
 const Model = core.Model;
 
 const MODEL_ATTRIBUTES = {
-	 name: {type: Sequelize.STRING, allowNull: false, unique: true},
+	name: {type: Sequelize.STRING, allowNull: false, unique: true},
   order: {type: Sequelize.INTEGER, allowNull: false},
   is_active: {type: Sequelize.BOOLEAN, defaultValue: true}
 };
@@ -20,3 +20,4 @@ class StatusModel extends Model {
 }
 
 module.exports = new StatusModel();
+

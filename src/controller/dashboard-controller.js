@@ -1,8 +1,6 @@
-// const db = require('../model');
 const core = require('../core');
 const controllerUtils = core.controllerUtils;
 const db = require('../database');
-// const sequelize = database.sequelize;
 
 module.exports = {
 	async calculate(req, res) {

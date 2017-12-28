@@ -64,9 +64,6 @@ module.exports.sendAuthData = function (req, res) {
 };
 
 module.exports.checkAccessTokenValid = function (req, res, next) {
-console.log("------------------------------------------");
-console.log(req.user);
-console.log("------------------------------------------");
   if (req.user) {
     let accessToken = extractAccessToken(req);
     if (accessToken) {

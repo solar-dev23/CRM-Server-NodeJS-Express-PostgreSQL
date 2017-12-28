@@ -61,7 +61,7 @@ class Model {
     dalUtils.registerModel(this._sequelizeModel, this._fields, sortOrderField);
   }
 
-  findById(id, transaction) {
+  findById(id, transaction) {    
     return this.findOne({id: id}, transaction);
   };
 
@@ -70,7 +70,7 @@ class Model {
   }
 
   loadAll(transaction) {
-    return this.find(null, transaction);
+    return this.find(transaction);
   }
 
   find(filter, transaction) {

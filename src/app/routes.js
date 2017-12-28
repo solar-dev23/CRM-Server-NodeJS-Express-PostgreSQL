@@ -5,6 +5,9 @@ const authController = controller.authController;
 const userController = controller.userController;
 const accessController = controller.accessController;
 const dashboardController = controller.dashboardController;
+const opportunityController = controller.opportunityController;
+const statusController = controller.statusController;
+const reminderController = controller.reminderController;
 
 const core = require('../core');
 const constants = core.constants;
@@ -36,4 +39,23 @@ module.exports = function (router) {
 
   router.post('/rest/dashboard/calculate', dashboardController.calculate);
   router.post('/rest/dashboard/calculate/v2', dashboardController.calculateV2);
+
+  router.post('/rest/opportunity', opportunityController.create);
+  router.get('/rest/opportunity', opportunityController.list);
+  router.put('/rest/opportunity', opportunityController.update);
+  router.delete('/rest/opportunity', opportunityController.remove);
+  router.post('/rest/opportunity/reorder', opportunityController.reorder);
+  router.post('/rest/opportunity/archiveAll', opportunityController.archiveAll);
+
+  router.post('/rest/status', statusController.create);
+  router.get('/rest/status', statusController.list);
+  router.put('/rest/status', statusController.update);
+  router.delete('/rest/status', statusController.remove);
+  router.post('/rest/status/reorder', statusController.reorder);
+
+  router.post('/rest/reminder', reminderController.create);
+  router.get('/rest/reminder', reminderController.list);
+  router.put('/rest/reminder', reminderController.update);
+  router.delete('/rest/reminder', reminderController.remove);
+  router.get('/rest/reminder/one', reminderController.getOne);
 };

@@ -5,6 +5,9 @@ const mainController = require('./main-controller');
 const userController = require('./user-controller');
 const accessController = require('./access-controller');
 const dashboardController = require('./dashboard-controller');
+const opportunityController = require('./opportunity-controller');
+const statusController = require('./status-controller');
+const reminderController = require('./reminder-controller');
 
 const init = function () {
   return accessController.init();
@@ -16,5 +19,8 @@ module.exports = {
   mainController,
   userController,
   accessController,
-  dashboardController
+  dashboardController,
+  opportunityController,
+  statusController,
+  reminderController
 };
