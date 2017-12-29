@@ -4,32 +4,112 @@ const userModel = model.userModel;
 const _ = require('lodash');
 
 module.exports = {
-	create(req, res) {
-    let isDuplicated = false;
+	save(req, res) {
+    if(req.body.id){  // Update Opportunity
+      return opportunityModel
+        .findById(req.body.id)
+        .then(opportunity => {
+            if (!opportunity) {
+              return res.status(404).send({
+                message: 'Opportunity Not Found',
+              });
+            }
 
-    opportunityModel.loadAll()
-      .then(opportunities => {
-        _.each(opportunities, function(opportunity) {
-          if(opportunity.name.toLowerCase() == req.body.name.toLowerCase())
-            isDuplicated = true;
-        });
+            let notify_users_ary, notify_users_str;
 
-        if(isDuplicated) {
-          return res.status(400).send({
-              "errors": [
-                {
-                  "message": "name must be unique."
+            if(req.body.notify) {
+              if(!opportunity.dataValues.notify_users)
+                notify_users_ary = [];
+              else
+                notify_users_ary = opportunity.dataValues.notify_users.split(',');
+
+              if(req.body.notify.value){
+                if(notify_users_ary.indexOf(req.body.notify.id) === -1){
+                  notify_users_ary.push(req.body.notify.id);
                 }
-              ]
-            })
-        }else {
-          return opportunityModel
-            .create(req.body)
-            .then(opportunity => res.status(201).send(opportunity))
-            .catch(error => res.status(400).send(error));
-        }
-      })
-      .catch(error => res.status(400).send(error));
+              }else {
+                var index = notify_users_ary.indexOf(req.body.notify.id);
+                if(index !== -1){
+                  notify_users_ary.splice(index, 1);
+                }
+              }
+
+              notify_users_str = notify_users_ary.toString();
+            }else {
+              if(!opportunity.dataValues.notify_users){
+                notify_users_ary = [];
+                notify_users_str = '';
+              }
+              else{
+                notify_users_ary = opportunity.dataValues.notify_users.split(',');
+                notify_users_str = opportunity.dataValues.notify_users;
+              }
+            }
+
+            if(notify_users_ary.length > 0){
+              // userModel
+              //   .findAll({
+              //     where: {
+              //         id: { $in: notify_users_ary }
+              //     }
+              //   }).then(users => {
+              //     // sendMail(users, opportunity.name);
+              //   }).catch(error => res.status(400).send(error));
+              
+              userModel
+                .loadAll().then(users => {
+                  // sendMail(users, opportunity.name);
+                }).catch(error => res.status(400).send(error));
+            }
+
+
+            return opportunity
+              .update({
+                status_id: req.body.status_id,
+                name: req.body.name,
+                company: req.body.company,
+                contact: req.body.contact,
+                value: req.body.value,
+                currency: req.body.currency,
+                rating: req.body.rating,
+                description: req.body.description,
+                bgColor: req.body.bgColor,
+                order: req.body.order,
+                is_active: req.body.is_active,
+                user_id: req.body.user_id,
+                notify_users: notify_users_str
+              })
+              .then(() => res.status(200).send(opportunity))
+              .catch(error => res.status(400).send(error));
+        })
+        .catch(error => res.status(400).send(error));
+    }else {           // Create Opportunity
+      let isDuplicated = false;
+
+      opportunityModel.loadAll()
+        .then(opportunities => {
+          _.each(opportunities, function(opportunity) {
+            if(opportunity.name.toLowerCase() == req.body.name.toLowerCase())
+              isDuplicated = true;
+          });
+
+          if(isDuplicated) {
+            return res.status(400).send({
+                "errors": [
+                  {
+                    "message": "name must be unique."
+                  }
+                ]
+              })
+          }else {
+            return opportunityModel
+              .create(req.body)
+              .then(opportunity => res.status(201).send(opportunity))
+              .catch(error => res.status(400).send(error));
+          }
+        })
+        .catch(error => res.status(400).send(error));      
+      }
   },
   list(req, res) {
     return opportunityModel

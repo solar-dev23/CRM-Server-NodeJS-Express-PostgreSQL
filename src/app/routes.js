@@ -40,7 +40,7 @@ module.exports = function (router) {
   router.post('/rest/dashboard/calculate', dashboardController.calculate);
   router.post('/rest/dashboard/calculate/v2', dashboardController.calculateV2);
 
-  router.post('/rest/opportunity', opportunityController.create);
+  router.post('/rest/opportunity', opportunityController.save);
   router.get('/rest/opportunity', opportunityController.list);
   router.put('/rest/opportunity', opportunityController.update);
   router.delete('/rest/opportunity', opportunityController.remove);
