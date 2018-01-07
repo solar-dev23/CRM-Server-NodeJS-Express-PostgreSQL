@@ -36,6 +36,7 @@ module.exports = function (router) {
 
   router.get('/rest/user/one', userController.getOne);
   router.put('/rest/user', userController.update);
+  router.post('/rest/user/avatar', userController.upload);
 
   router.post('/rest/dashboard/calculate', dashboardController.calculate);
   router.post('/rest/dashboard/calculate/v2', dashboardController.calculateV2);

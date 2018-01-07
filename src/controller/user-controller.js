@@ -21,6 +21,16 @@ const HTTP_CODES = core.HTTP_CODE;
 const PERMISSION_TYPE = core.constants.PERMISSION_TYPE;
 const BadRequestError = core.error.BadRequestError;
 
+var fs = require('graceful-fs');
+const aws = {
+  accessKeyId: 'AKIAJQV4F6L3OKVG4BBA',
+  secretAccessKey: '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'
+}
+const BUCKET_NAME = 'mateam_crm';
+var s3Client = require('s3').createClient({
+  s3Options: aws
+});
+
 const getDefaultRoles = function () {
   let defaultRole = accessCache.getDefaultRole();
   return defaultRole ? [defaultRole] : [];
@@ -252,3 +262,46 @@ module.exports.update = function(req, res, next) {
     })
     .catch(error => res.status(400).send(error));
 };
+
+module.exports.upload = function(req, res, next) {
+  const data = req.body.base64;
+  const tempLocation = '/image/' + Date.now() + '.jpg';
+  uploadPhoto(data, tempLocation, (imageUrl) => {
+    console.log(imageUrl, 'image uploaded succesfully...');
+    res.status(200).json({
+      image: imageUrl
+    });
+  });
+};
+
+const uploadPhoto = (data, filepath, cb) => {
+  data = data.replace(/^data:image\/jpeg;base64,/, "");
+  data = data.replace(/^data:image\/png;base64,/, "");
+
+  // Save base64 string as image file on server ...
+  var imageBuffer = new Buffer(data, 'base64'); //console = <Buffer 75 ab 5a 8a ...
+  fs.writeFileSync('public' + filepath, imageBuffer);
+
+  // Upload saved image to s3, then delete it after successful upload
+  const uploadKey = Date.now() + '.jpg';
+  var params = {
+    localFile: "public" + filepath,
+
+    s3Params: {
+      Bucket: BUCKET_NAME,
+      Key: uploadKey,
+      ACL: 'public-read'
+    },
+  };
+  var uploader = s3Client.uploadFile(params);
+  uploader.on('error', function (err) {
+    console.error("unable to upload:", err.stack);
+    cb(null);
+  });
+  uploader.on('end', function () {
+    console.log('upload end')
+    fs.unlinkSync('public' + filepath);
+    const imageUrl = require('s3').getPublicUrl(BUCKET_NAME, uploadKey);
+    cb(imageUrl);
+  });
+}
