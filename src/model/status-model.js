@@ -9,7 +9,9 @@ const Model = core.Model;
 const MODEL_ATTRIBUTES = {
 	name: {type: Sequelize.STRING, allowNull: false, unique: true},
   order: {type: Sequelize.INTEGER, allowNull: false},
-  is_active: {type: Sequelize.BOOLEAN, defaultValue: true}
+  is_active: {type: Sequelize.BOOLEAN, defaultValue: true},
+  createdAt: {type: Sequelize.DATE, field: 'created_at'},
+  updatedAt: {type: Sequelize.DATE, field: 'updated_at'}  
 };
 
 class StatusModel extends Model {

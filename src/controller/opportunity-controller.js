@@ -85,7 +85,6 @@ module.exports = {
         .catch(error => res.status(400).send(error));
     }else {           // Create Opportunity
       let isDuplicated = false;
-
       opportunityModel.loadAll()
         .then(opportunities => {
           _.each(opportunities, function(opportunity) {
@@ -103,7 +102,7 @@ module.exports = {
               })
           }else {
             return opportunityModel
-              .create(req.body)
+              .save(req.body)
               .then(opportunity => res.status(201).send(opportunity))
               .catch(error => res.status(400).send(error));
           }
@@ -121,85 +120,85 @@ module.exports = {
       })
       .catch(error => res.status(400).send(error));
   },
-  update(req, res) {
-    return opportunityModel
-      .findById(req.body.id)
-      .then(opportunity => {
-          if (!opportunity) {
-            return res.status(404).send({
-              message: 'Opportunity Not Found',
-            });
-          }
+  // update(req, res) {
+  //   return opportunityModel
+  //     .findById(req.body.id)
+  //     .then(opportunity => {
+  //         if (!opportunity) {
+  //           return res.status(404).send({
+  //             message: 'Opportunity Not Found',
+  //           });
+  //         }
 
-          let notify_users_ary, notify_users_str;
+  //         let notify_users_ary, notify_users_str;
 
-          if(req.body.notify) {
-            if(!opportunity.dataValues.notify_users)
-              notify_users_ary = [];
-            else
-              notify_users_ary = opportunity.dataValues.notify_users.split(',');
+  //         if(req.body.notify) {
+  //           if(!opportunity.dataValues.notify_users)
+  //             notify_users_ary = [];
+  //           else
+  //             notify_users_ary = opportunity.dataValues.notify_users.split(',');
 
-            if(req.body.notify.value){
-              if(notify_users_ary.indexOf(req.body.notify.id) === -1){
-                notify_users_ary.push(req.body.notify.id);
-              }
-            }else {
-              var index = notify_users_ary.indexOf(req.body.notify.id);
-              if(index !== -1){
-                notify_users_ary.splice(index, 1);
-              }
-            }
+  //           if(req.body.notify.value){
+  //             if(notify_users_ary.indexOf(req.body.notify.id) === -1){
+  //               notify_users_ary.push(req.body.notify.id);
+  //             }
+  //           }else {
+  //             var index = notify_users_ary.indexOf(req.body.notify.id);
+  //             if(index !== -1){
+  //               notify_users_ary.splice(index, 1);
+  //             }
+  //           }
 
-            notify_users_str = notify_users_ary.toString();
-          }else {
-            if(!opportunity.dataValues.notify_users){
-              notify_users_ary = [];
-              notify_users_str = '';
-            }
-            else{
-              notify_users_ary = opportunity.dataValues.notify_users.split(',');
-              notify_users_str = opportunity.dataValues.notify_users;
-            }
-          }
+  //           notify_users_str = notify_users_ary.toString();
+  //         }else {
+  //           if(!opportunity.dataValues.notify_users){
+  //             notify_users_ary = [];
+  //             notify_users_str = '';
+  //           }
+  //           else{
+  //             notify_users_ary = opportunity.dataValues.notify_users.split(',');
+  //             notify_users_str = opportunity.dataValues.notify_users;
+  //           }
+  //         }
 
-          if(notify_users_ary.length > 0){
-            // userModel
-            //   .findAll({
-            //     where: {
-            //         id: { $in: notify_users_ary }
-            //     }
-            //   }).then(users => {
-            //     // sendMail(users, opportunity.name);
-            //   }).catch(error => res.status(400).send(error));
+  //         if(notify_users_ary.length > 0){
+  //           // userModel
+  //           //   .findAll({
+  //           //     where: {
+  //           //         id: { $in: notify_users_ary }
+  //           //     }
+  //           //   }).then(users => {
+  //           //     // sendMail(users, opportunity.name);
+  //           //   }).catch(error => res.status(400).send(error));
             
-            userModel
-              .loadAll().then(users => {
-                // sendMail(users, opportunity.name);
-              }).catch(error => res.status(400).send(error));
-          }
+  //           userModel
+  //             .loadAll().then(users => {
+  //               // sendMail(users, opportunity.name);
+  //             }).catch(error => res.status(400).send(error));
+  //         }
 
 
-          return opportunity
-            .update({
-              status_id: req.body.status_id,
-              name: req.body.name,
-              company: req.body.company,
-              contact: req.body.contact,
-              value: req.body.value,
-              currency: req.body.currency,
-              rating: req.body.rating,
-              description: req.body.description,
-              bgColor: req.body.bgColor,
-              order: req.body.order,
-              is_active: req.body.is_active,
-              user_id: req.body.user_id,
-              notify_users: notify_users_str
-            })
-            .then(() => res.status(200).send(opportunity))
-            .catch(error => res.status(400).send(error));
-      })
-      .catch(error => res.status(400).send(error));
-  },
+  //         return opportunity
+  //           .update({
+  //             status_id: req.body.status_id,
+  //             name: req.body.name,
+  //             company: req.body.company,
+  //             contact: req.body.contact,
+  //             value: req.body.value,
+  //             currency: req.body.currency,
+  //             rating: req.body.rating,
+  //             description: req.body.description,
+  //             bgColor: req.body.bgColor,
+  //             order: req.body.order,
+  //             is_active: req.body.is_active,
+  //             user_id: req.body.user_id,
+  //             notify_users: notify_users_str
+  //           })
+  //           .then(() => res.status(200).send(opportunity))
+  //           .catch(error => res.status(400).send(error));
+  //     })
+  //     .catch(error => res.status(400).send(error));
+  // },
   remove(req, res)  {
     return opportunityModel
       .findById(req.body.id)

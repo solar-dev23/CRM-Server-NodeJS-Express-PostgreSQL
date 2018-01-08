@@ -4,12 +4,14 @@ const db = require('../database');
 
 module.exports = {
 	async calculate(req, res) {
-		let date_from = controllerUtils.formatDate(req.body.object.date_from);
-    let date_to = controllerUtils.formatDate(req.body.object.date_to);
+		// let date_from = controllerUtils.formatDate(req.body.object.date_from);
+    // let date_to = controllerUtils.formatDate(req.body.object.date_to);
+    let date_from = req.body.object.date_from;
+    let date_to = req.body.object.date_to;
     let currency = req.body.object.currency;
     let show_by = req.body.object.showBy;
     let value = req.body.object.value;
-    console.log(req.body.object);
+
     if (show_by == 'Currency') this.filterEUR = this.filterUSD = true;
 
     let query = `SELECT * FROM opportunities where `;
@@ -35,8 +37,10 @@ module.exports = {
     return controllerUtils.responseHandler(res, true, "Get Opportunities Successfully ", result);
 	},
 	async calculateV2(req, res) {
-		let date_from = controllerUtils.formatDate(req.body.object.date_from);
-    let date_to = controllerUtils.formatDate(req.body.object.date_to);
+		// let date_from = controllerUtils.formatDate(req.body.object.date_from);
+  //   let date_to = controllerUtils.formatDate(req.body.object.date_to);
+    let date_from = req.body.object.date_from;
+    let date_to = req.body.object.date_to;
     let currency = req.body.object.currency;
     let show_by = req.body.object.showBy;
     let by = req.body.object.by;

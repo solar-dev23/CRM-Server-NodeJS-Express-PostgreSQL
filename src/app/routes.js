@@ -43,14 +43,14 @@ module.exports = function (router) {
 
   router.post('/rest/opportunity', opportunityController.save);
   router.get('/rest/opportunity', opportunityController.list);
-  router.put('/rest/opportunity', opportunityController.update);
+  // router.put('/rest/opportunity', opportunityController.update);
   router.delete('/rest/opportunity', opportunityController.remove);
   router.post('/rest/opportunity/reorder', opportunityController.reorder);
   router.post('/rest/opportunity/archiveAll', opportunityController.archiveAll);
 
-  router.post('/rest/status', statusController.create);
+  router.post('/rest/status', statusController.save);
   router.get('/rest/status', statusController.list);
-  router.put('/rest/status', statusController.update);
+  // router.put('/rest/status', statusController.update);
   router.delete('/rest/status', statusController.remove);
   router.post('/rest/status/reorder', statusController.reorder);
 

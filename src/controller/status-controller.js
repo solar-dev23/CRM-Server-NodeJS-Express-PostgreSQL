@@ -3,64 +3,85 @@ const statusModel = model.statusModel;
 const _ = require('lodash');
 
 module.exports = {
-	create(req, res) {
-    let isDuplicated = false;
+	save(req, res) {
+    if(req.body.id){   // Update Status
+        return statusModel
+          .findById(req.body.id)
+          .then(status => {
+              if (!status) {
+                return res.status(404).send({
+                  message: 'Status Not Found',
+                });
+              }
 
-    statusModel.loadAll()
-      .then(statuses => {
-        _.each(statuses, function(status) {
-          if(status.name.toLowerCase() == req.body.name.toLowerCase())
-            isDuplicated = true;
-        });
-    
-        if(isDuplicated) {
-          return res.status(400).send({
-              "errors": [
-                {
-                  "message": "name must be unique."
-                }
-              ]
-            })
-        }else {
-          return statusModel
-            .save({
-              name: req.body.name,
-              order: req.body.order
-            })
-            .then(status => res.status(201).send(status))
-            .catch(error => res.status(400).send(error));
-        }
-      })
-      .catch(error => res.status(400).send(error));
+              return status
+                .save({
+                  name: req.body.name || status.name
+                })
+                .then(() => res.status(200).send(status))
+                .catch(error => res.status(400).send(error));
+          })
+          .catch(error => res.status(400).send(error));
+    } else {           // Create Status
+        let isDuplicated = false;
+
+        statusModel.loadAll()
+          .then(statuses => {
+            _.each(statuses, function(status) {
+              if(status.name.toLowerCase() == req.body.name.toLowerCase())
+                isDuplicated = true;
+            });
+        
+            if(isDuplicated) {
+              return res.status(400).send({
+                  "errors": [
+                    {
+                      "message": "name must be unique."
+                    }
+                  ]
+                })
+            }else {
+              return statusModel
+                .save({
+                  name: req.body.name,
+                  order: req.body.order
+                })
+                .then(status => res.status(201).send(status))
+                .catch(error => res.status(400).send(error));
+            }
+          })
+          .catch(error => res.status(400).send(error));
+    }
   },
   list(req, res) {
     return statusModel
       // .findAll({order:['order']})
       .loadAll()
       .then(status => {
+          status = _.orderBy(status, ['order'], ['asc']);
           res.status(200).send(status);
       })
       .catch(error => res.status(400).send(error));
   },
-  update(req, res) {
-    return statusModel
-      .findById(req.body.id)
-      .then(status => {
-          if (!status) {
-            return res.status(404).send({
-              message: 'Status Not Found',
-            });
-          }
+  // update(req, res) {
+  //   return statusModel
+  //     .findById(req.body.id)
+  //     .then(status => {
+  //         if (!status) {
+  //           return res.status(404).send({
+  //             message: 'Status Not Found',
+  //           });
+  //         }
 
-          return status
-            .update({
-              name: req.body.name || status.name
-            })
-            .then(() => res.status(200).send(status))
-            .catch(error => res.status(400).send(error));
-      })
-      .catch(error => res.status(400).send(error));
-  },
+  //         return status
+  //           .update({
+  //             name: req.body.name || status.name
+  //           })
+  //           .then(() => res.status(200).send(status))
+  //           .catch(error => res.status(400).send(error));
+  //     })
+  //     .catch(error => res.status(400).send(error));
+  // },
   remove(req, res)  {
     return statusModel
       .findById(req.body.id)
