@@ -209,15 +209,10 @@ module.exports = {
 };
 
 const getUsers = async() => {
-  let opportunities = await db.sequelize.query(`SELECT contact FROM opportunities`, {
+  let users = await db.sequelize.query(`SELECT * FROM users`, {
       type: db.sequelize.QueryTypes.SELECT
   })
-  let result = [];
-  opportunities.forEach(function (opportunity) {
-      let contact = opportunity.contact;
-      if (result.indexOf(contact) == -1) result.push(contact);
-  }, this);
-  return result;
+  return users;
 }
 
 const getStatus = async() => {
@@ -252,8 +247,7 @@ const calculate = (opportunities, show_by, users, companies, statuses) => {
 
   for (let i = 0; i < users.length; i++) {
       let name = users[i];
-      users[i] = {};
-      users[i].name = name;
+      users[i].name = name.username;
       users[i].count = 0;
       users[i].sum = 0;
   }
@@ -293,7 +287,7 @@ const calculate = (opportunities, show_by, users, companies, statuses) => {
       // User, Company, Statuses
       if (show_by == 'User') {
           for (var j = 0; j < users.length; j++) {
-              if (opportunity.contact == users[j].name) {
+              if (opportunity.user_id == users[j].id) {
                   users[j].sum += opportunity.value;
                   users[j].count++;
               }
