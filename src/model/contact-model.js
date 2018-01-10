@@ -4,6 +4,7 @@ const database = require('../database');
 const Sequelize = database.Sequelize;
 
 const core = require('../core');
+const validator = core.validator;
 const Model = core.Model;
 
 const MODEL_ATTRIBUTES = {

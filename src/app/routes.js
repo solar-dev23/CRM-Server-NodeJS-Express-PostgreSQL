@@ -8,6 +8,8 @@ const dashboardController = controller.dashboardController;
 const opportunityController = controller.opportunityController;
 const statusController = controller.statusController;
 const reminderController = controller.reminderController;
+const contactController = controller.contactController;
+const accountController = controller.accountController;
 
 const core = require('../core');
 const constants = core.constants;
@@ -59,4 +61,12 @@ module.exports = function (router) {
   router.put('/rest/reminder', reminderController.update);
   router.delete('/rest/reminder', reminderController.remove);
   router.get('/rest/reminder/one', reminderController.getOne);
+
+  router.get('/rest/contact/all', contactController.loadAll);
+  router.post('/rest/contact/save', contactController.save);
+  router.delete('/rest/contact/remove', contactController.remove);
+
+  router.get('/rest/account/all', accountController.loadAll);
+  router.post('/rest/account/save', accountController.save);
+  router.delete('/rest/account/remove', accountController.remove);
 };
