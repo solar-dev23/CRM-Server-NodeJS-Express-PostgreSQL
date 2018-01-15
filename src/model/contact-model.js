@@ -5,7 +5,9 @@ const Sequelize = database.Sequelize;
 
 const core = require('../core');
 const validator = core.validator;
+const ContainerModel = core.ContainerModel;
 const Model = core.Model;
+const accountModel = require('./account-model');
 
 const MODEL_ATTRIBUTES = {
 	firstName: {field: 'first_name', type: Sequelize.TEXT, allowNull: false, validate: {len: 1}},
@@ -36,10 +38,31 @@ const MODEL_ATTRIBUTES = {
   address_id: {type: Sequelize.UUID}
 };
 
-class ContactModel extends Model {
+class ContactModel extends ContainerModel {
   constructor() {
     super('contacts');
     this.buildModel(MODEL_ATTRIBUTES);
+    this.createBelongsToManyAssociation('accounts', 'contact_accounts', 'contact_id', accountModel.sequelizeModel, ['id']);
+  }
+
+  get accounts() {
+    return this.getAssociation("accounts");
+  }
+
+  loadAccountsByContactId(id, transaction) {
+    return this.accounts.throughModel.findAll({where: {contact_id: id}, transaction: transaction}).then((accounts) => {
+      return _.map(accounts, (account) => {
+        return {id: account.account_id};
+      });
+    });
+  }
+
+  async setAccounts(contactId, accounts, transaction) {
+    accounts = _.map(accounts, (account) => {
+      return {contact_id: contactId, account_id: account.id};
+    });
+    await this.accounts.throughModel.destroy({where: {contact_id: contactId}, transaction: transaction});
+    await this.accounts.throughModel.bulkCreate(accounts, {transaction: transaction});
   }
 }
 

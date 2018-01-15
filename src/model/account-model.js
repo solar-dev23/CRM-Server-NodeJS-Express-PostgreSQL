@@ -8,7 +8,7 @@ const Model = core.Model;
 
 const MODEL_ATTRIBUTES = {
   companyName: {field: 'company_name', type: Sequelize.TEXT, allowNull: false, validate: {len: 1}},
-  displayName: {field: 'display_name', type: Sequelize.TEXT},
+  displayName: {field: 'display_name', type: Sequelize.TEXT, allowNull: false, validate: {len: 1}},
   account_type: {type: Sequelize.STRING},
   contacts_id: {type: Sequelize.UUID},
   social_networks_id: {type: Sequelize.UUID},
