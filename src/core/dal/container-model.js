@@ -17,6 +17,15 @@ class ContainerModel extends Model {
     dalUtils.registerAssociation(this.getAssociation(fieldName), childFields);
   }
 
+  createBelongsToManyAssociationWithCircular(fieldName, through, foreignKey, targetModel, childFields) {
+    this.sequelizeModel[fieldName] = this.sequelizeModel.belongsToMany(targetModel, {
+      as: fieldName,
+      through: through,
+      foreignKey: foreignKey
+    });
+    dalUtils.registerAssociation(this.getAssociation(fieldName), childFields);
+  }
+
   getAssociation(fieldName) {
     return this.sequelizeModel[fieldName];
   }

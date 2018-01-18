@@ -9,7 +9,6 @@ const core = require('../core');
 const validator = core.validator;
 const ContainerModel = core.ContainerModel;
 const Model = core.Model;
-const accountModel = require('./account-model');
 
 const MODEL_ATTRIBUTES = {
 	firstName: {field: 'first_name', type: Sequelize.TEXT, allowNull: false, validate: {len: 1}},
@@ -42,7 +41,6 @@ class ContactModel extends ContainerModel {
   constructor() {
     super('contacts');
     this.buildModel(MODEL_ATTRIBUTES);
-    this.createBelongsToManyAssociation('accounts', 'contact_accounts', 'contact_id', accountModel.sequelizeModel, ['id']);
   }
 
   get accounts() {

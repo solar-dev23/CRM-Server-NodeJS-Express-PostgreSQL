@@ -37,6 +37,9 @@ const prepareWithChildrenToSave = function (object, model) {
     childObjects && association.sortOrderField && _.forEach(childObjects, (childObject, index) =>
       childObject[association.sortOrderField] = index + 1);
     association.onSaveHandler && association.onSaveHandler([object]);
+console.log("============================");
+console.log(association.sortOrderField);
+console.log("============================");
   });
 };
 
@@ -99,6 +102,7 @@ const buildLoadQueryAttributes = function (model, associations, filter, transact
   let order = _.filter(associations, association => !!association.sortOrderField);
   order = _.map(order, association => [{model: association.association.target, as: association.fieldName},
     association.sortOrderField, 'ASC']);
+
   return {
     attributes: fields,
     include: _.map(getAssociationsMetadata(model), (association) => {
@@ -143,6 +147,7 @@ const updateChildrenForAssociation = function (object, association, transaction)
   let model = association.targetModel;
   let parentCondition = {};
   parentCondition[association.parentIdentifierField] = object.id;
+
   return model
     .findAll({attributes: ['id'], where: parentCondition, transaction: transaction})
     .then((childObjects) => {
@@ -186,14 +191,24 @@ const updateChildrenForAssociation = function (object, association, transaction)
 
 const updateChildrenForBelongsToManyAssociation = function (object, association, transaction) {
   let throughModel = association.throughModel;
-  let objectIdField = throughModel.primaryKeyAttribute;
-  let targetObjectIdField = throughModel.primaryKeyAttributes[1];
+  /* ------ Original code commented by Lucas. ---------- */
+  // let objectIdField = throughModel.primaryKeyAttribute;
+  // let targetObjectIdField = throughModel.primaryKeyAttributes[1];
+  /* --------------------------------------------------- */
+  
+  // Updated code edited by Lucas(2018-01-18)
+  let objectIdField = association.parentIdentifierField;
+  let targetObjectIdField = throughModel.primaryKeyAttributes.filter(attr => {
+    return attr !== objectIdField
+  })[0];
+
   let children = _.map(object[association.fieldName], (child) => {
     let res = {};
     res[objectIdField] = object.id;
     res[targetObjectIdField] = child.id;
     return res;
   });
+
   return throughModel
     .destroy({where: _.set({}, objectIdField, object.id), transaction: transaction})
     .then(() => throughModel.bulkCreate(children, {transaction: transaction}));
