@@ -5,6 +5,14 @@ const controllerUtils = core.controllerUtils;
 const HTTP_CODES = core.HTTP_CODE;
 const _ = require('lodash');
 
+const database = require('../database');
+const sequelize = database.sequelize;
+
+const save = async function (account) {
+  return await accountModel.save(account);
+};
+
+
 module.exports.loadAll = function (req, res, next) {
   accountModel
     .loadAll()
@@ -13,27 +21,14 @@ module.exports.loadAll = function (req, res, next) {
 };
 
 module.exports.save = function (req, res, next) {
-	if(req.body.id){  // Update Account
-    return accountModel
-      .findById(req.body.id)
-      .then(account => {
-          if (!account) {
-            return res.status(404).send({
-              message: 'Account Not Found',
-            });
-          }
-
-          return account
-            .update(req.body)
-            .then(() => res.status(200).send(account))
-            .catch(error => res.status(400).send(error));
-      })
-      .catch(error => res.status(400).send(error));
-  }else {           // Create Account
-    return accountModel
-      .save(req.body)
-      .then(account => res.status(201).send(account))
-      .catch(error => res.status(400).send(error));
+  let account = controllerUtils.extractObjectFromRequest(req);
+  if (account) {
+    account.contacts = !account.contacts ? [] : account.contacts;
+    save(account)
+      .then(account => res.status(HTTP_CODES.OK).send(account))
+      .catch(next);
+  } else {
+    res.status(HTTP_CODES.BAD_REQUEST).send('Incorrect request');
   }
 }
 

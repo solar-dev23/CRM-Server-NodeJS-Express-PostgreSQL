@@ -137,7 +137,6 @@ class UserModel extends ContainerModel {
     return new Promise((resolve, reject) => {
       let username = user.username.toLowerCase();
       let email = user.email.toLowerCase();
-
       if (username || email) {
         let filter = {$or: []};
         if (user.id) {

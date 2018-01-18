@@ -1,7 +1,9 @@
 'use strict';
 
+const _ = require('lodash');
 const database = require('../database');
 const Sequelize = database.Sequelize;
+const sequelize = database.sequelize;
 
 const core = require('../core');
 const validator = core.validator;
@@ -33,9 +35,7 @@ const MODEL_ATTRIBUTES = {
   extension: {type: Sequelize.STRING},
   fax: {type: Sequelize.STRING},
   mobile: {type: Sequelize.STRING},
-  account_id: {type: Sequelize.UUID},
-  social_networks_id: {type: Sequelize.UUID},
-  address_id: {type: Sequelize.UUID}
+  social_networks_id: {type: Sequelize.UUID}
 };
 
 class ContactModel extends ContainerModel {
@@ -57,10 +57,15 @@ class ContactModel extends ContainerModel {
     });
   }
 
+  save(contact, transaction) {
+    return super.save(contact, transaction);
+  }
+
   async setAccounts(contactId, accounts, transaction) {
-    accounts = _.map(accounts, (account) => {
-      return {contact_id: contactId, account_id: account.id};
+    accounts = _.map(accounts, (accountId) => {
+      return {contact_id: contactId, account_id: accountId};
     });
+
     await this.accounts.throughModel.destroy({where: {contact_id: contactId}, transaction: transaction});
     await this.accounts.throughModel.bulkCreate(accounts, {transaction: transaction});
   }

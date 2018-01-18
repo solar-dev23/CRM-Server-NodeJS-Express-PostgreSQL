@@ -7,6 +7,7 @@ const Sequelize = database.Sequelize;
 
 const core = require('../core');
 const ContainerModel = core.ContainerModel;
+const userModel = require('./user-model');
 
 const MODEL_ATTRIBUTES = {
   title: {
@@ -24,6 +25,7 @@ class RoleModel extends ContainerModel {
   constructor() {
     super('roles');
     this.buildModel(MODEL_ATTRIBUTES);
+    
     this.createBelongsToManyAssociation('permissions', 'role_permissions', 'role_id',
       permissionModel.sequelizeModel, ['id']);
   }
