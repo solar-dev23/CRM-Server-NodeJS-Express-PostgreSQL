@@ -5,13 +5,9 @@ const controllerUtils = core.controllerUtils;
 const HTTP_CODES = core.HTTP_CODE;
 const _ = require('lodash');
 
-const database = require('../database');
-const sequelize = database.sequelize;
-
 const save = async function (contact) {
   return await contactModel.save(contact);
 };
-
 
 module.exports.loadAll = function (req, res, next) {
   contactModel

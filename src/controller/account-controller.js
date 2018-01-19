@@ -5,9 +5,6 @@ const controllerUtils = core.controllerUtils;
 const HTTP_CODES = core.HTTP_CODE;
 const _ = require('lodash');
 
-const database = require('../database');
-const sequelize = database.sequelize;
-
 const save = async function (account) {
   return await accountModel.save(account);
 };

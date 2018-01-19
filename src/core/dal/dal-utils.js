@@ -37,9 +37,6 @@ const prepareWithChildrenToSave = function (object, model) {
     childObjects && association.sortOrderField && _.forEach(childObjects, (childObject, index) =>
       childObject[association.sortOrderField] = index + 1);
     association.onSaveHandler && association.onSaveHandler([object]);
-console.log("============================");
-console.log(association.sortOrderField);
-console.log("============================");
   });
 };
 

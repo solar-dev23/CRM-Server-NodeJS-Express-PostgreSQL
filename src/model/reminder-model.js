@@ -7,8 +7,8 @@ const core = require('../core');
 const Model = core.Model;
 
 const MODEL_ATTRIBUTES = {
-  user_id: {type: Sequelize.BIGINT},
-  opportunity_id: {type: Sequelize.BIGINT},
+  user_id: {type: Sequelize.UUID},
+  opportunity_id: {type: Sequelize.UUID},
   reminder_id: {type: Sequelize.STRING(50)},
   reminder_date: {type: Sequelize.DATE}
 };

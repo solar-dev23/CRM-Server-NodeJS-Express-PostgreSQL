@@ -1,147 +1,89 @@
 const model = require('../model');
 const statusModel = model.statusModel;
+const opportunityModel = model.opportunityModel;
+const core = require('../core');
+const controllerUtils = core.controllerUtils;
+const HTTP_CODES = core.HTTP_CODE;
 const _ = require('lodash');
 
-module.exports = {
-	save(req, res) {
-    if(req.body.id){   // Update Status
-        return statusModel
-          .findById(req.body.id)
-          .then(status => {
-              if (!status) {
-                return res.status(404).send({
-                  message: 'Status Not Found',
-                });
-              }
+const save = async function (status) {
+  return await statusModel.save(status);
+};
 
-              return status
-                .save({
-                  name: req.body.name || status.name
-                })
-                .then(() => res.status(200).send(status))
-                .catch(error => res.status(400).send(error));
-          })
-          .catch(error => res.status(400).send(error));
-    } else {           // Create Status
-        let isDuplicated = false;
+module.exports.loadAll = function (req, res, next) {
+  statusModel
+    .loadAll()
+    .then(statuses => {
+      statuses = _.orderBy(statuses, ['order'], ['asc']);
+      res.json(statuses)
+    })
+    .catch(next);
+};
 
-        statusModel.loadAll()
-          .then(statuses => {
-            _.each(statuses, function(status) {
-              if(status.name.toLowerCase() == req.body.name.toLowerCase())
-                isDuplicated = true;
-            });
-        
-            if(isDuplicated) {
-              return res.status(400).send({
-                  "errors": [
-                    {
-                      "message": "name must be unique."
-                    }
-                  ]
-                })
-            }else {
-              return statusModel
-                .save({
-                  name: req.body.name,
-                  order: req.body.order
-                })
-                .then(status => res.status(201).send(status))
-                .catch(error => res.status(400).send(error));
-            }
-          })
-          .catch(error => res.status(400).send(error));
-    }
-  },
-  list(req, res) {
-    return statusModel
-      // .findAll({order:['order']})
-      .loadAll()
-      .then(status => {
-          status = _.orderBy(status, ['order'], ['asc']);
-          res.status(200).send(status);
-      })
-      .catch(error => res.status(400).send(error));
-  },
-  // update(req, res) {
-  //   return statusModel
-  //     .findById(req.body.id)
-  //     .then(status => {
-  //         if (!status) {
-  //           return res.status(404).send({
-  //             message: 'Status Not Found',
-  //           });
-  //         }
-
-  //         return status
-  //           .update({
-  //             name: req.body.name || status.name
-  //           })
-  //           .then(() => res.status(200).send(status))
-  //           .catch(error => res.status(400).send(error));
-  //     })
-  //     .catch(error => res.status(400).send(error));
-  // },
-  remove(req, res)  {
-    return statusModel
-      .findById(req.body.id)
-      .then(status => {
-          if (!status) {
-            return res.status(400).send({
-              message: 'Status Not Found',
-            });
-          }
-
-          let opportunities = req.body.opportunities;
-          _.each(opportunities, function(opportunity) {
-              // Delete active opportunities
-              if(opportunity.is_active){
-                Opportunity
-                  .findById(opportunity.id)
-                  .then(opportunity => {
-                    opportunity
-                      .destroy()
-                      .then(() => res.status(204).send({message: 'ok'}))
-                      .catch(error => res.status(400).send(error));
-                  })
-                  .catch(error => res.status(400).send(error));
-              }else {
-                // Update status_id = 100 for archived opportunities
-                Opportunity
-                  .findById(opportunity.id)
-                  .then(opportunity => {
-                    opportunity
-                      .update({ status_id: 100 })
-                      .then()
-                      .catch(error => res.status(400).send(error));
-                  })
-                  .catch(error => res.status(400).send(error));
-              }
-          });
-
-          return status
-            .destroy()
-            .then(() => res.status(204).send({message: 'ok'}))
-            .catch(error => res.status(400).send(error));
-      })
-      .catch(error => res.status(400).send(error));
-  },
-  reorder(req, res) {
-    let data = req.body;
-    _.each(data, function(status, i) {       
-      statusModel
-        .findById(status.id)
-        .then(status => {
-          status
-            .update({
-              order: i+1 || status.order
-            })
-            .then()
-            .catch(error => res.status(400).send(error));
-        })
-        .catch(error => res.status(400).send(error));
-    });
-    
-    return res.status(200).send({message: 'Status reordered successfully.'});
+module.exports.save = function (req, res, next) {
+  let status = controllerUtils.extractObjectFromRequest(req);
+  if (status) {
+    save(status)
+      .then(status => res.status(HTTP_CODES.OK).send(status))
+      .catch(next);
+  } else {
+    res.status(HTTP_CODES.BAD_REQUEST).send('Incorrect request');
   }
+};
+
+module.exports.remove = function (req, res, next) {
+  if (req.body.id) {
+    let opportunities = req.body.opportunities;
+    _.each(opportunities, function(opportunity) {
+        // Delete active opportunities
+        if(opportunity.is_active){
+          opportunityModel
+            .findById(opportunity.id)
+            .then(opportunity => {
+              opportunity
+                .destroy()
+                .then(() => res.status(HTTP_CODES.OK).send())
+                .catch(error => res.status(HTTP_CODES.BAD_REQUEST).send('Incorrect request'));
+            })
+            .catch(error => res.status(HTTP_CODES.BAD_REQUEST).send('Incorrect request'));
+        }else {
+          // Update status_id = 100 for archived opportunities
+          opportunityModel
+            .findById(opportunity.id)
+            .then(opportunity => {
+              opportunity
+                .update({ status_id: 100 })
+                .then()
+                .catch(error => res.status(HTTP_CODES.BAD_REQUEST).send('Incorrect request'));
+            })
+            .catch(error => res.status(HTTP_CODES.BAD_REQUEST).send('Incorrect request'));
+        }
+    });
+
+    statusModel
+      .removeById(req.body.id)
+      .then(() => res.status(HTTP_CODES.OK).send())
+      .catch(next);
+  } else {
+    res.status(HTTP_CODES.BAD_REQUEST).send('Incorrect request');
+  }
+};
+
+module.exports.reorder = function (req, res, next) {
+  let data = req.body;
+  _.each(data, function(status, i) {
+    statusModel
+      .findById(status.id)
+      .then(status => {
+        status
+          .update({
+            order: i+1 || status.order
+          })
+          .then()
+          .catch(error => res.status(HTTP_CODES.BAD_REQUEST).send('Incorrect request'));
+      })
+      .catch(error => res.status(HTTP_CODES.BAD_REQUEST).send('Incorrect request'));
+  });
+  
+  return res.status(HTTP_CODES.OK).send('Status reordered successfully.');
 }
