@@ -22,6 +22,9 @@ module.exports.loadAll = function (req, res, next) {
 
 module.exports.save = function (req, res, next) {
   let opportunity = controllerUtils.extractObjectFromRequest(req);
+console.log("===================================");
+console.log(opportunity);
+console.log("===================================");  
   if (opportunity) {
     save(opportunity)
       .then(opportunity => res.status(HTTP_CODES.OK).send(opportunity))
