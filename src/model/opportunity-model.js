@@ -9,8 +9,8 @@ const Model = core.Model;
 const MODEL_ATTRIBUTES = {
   status_id: {type: Sequelize.UUID, allowNull: false, unique: true},
   name: {type: Sequelize.STRING, allowNull: false},
-  company_id: {type: Sequelize.STRING},
-  contact_id: {type: Sequelize.STRING},
+  company_id: {type: Sequelize.UUID},
+  contact_id: {type: Sequelize.UUID},
   value: {type: Sequelize.FLOAT},
   currency:  {type: Sequelize.STRING},
   rating: {type: Sequelize.INTEGER, defaultValue: 3},
