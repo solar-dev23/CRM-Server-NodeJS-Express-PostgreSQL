@@ -4,6 +4,7 @@ const userModel = model.userModel;
 const core = require('../core');
 const controllerUtils = core.controllerUtils;
 const HTTP_CODES = core.HTTP_CODE;
+const mail = require('../mail');
 const _ = require('lodash');
 
 const save = async function (opportunity) {
@@ -23,8 +24,17 @@ module.exports.loadAll = function (req, res, next) {
 module.exports.save = function (req, res, next) {
   let opportunity = controllerUtils.extractObjectFromRequest(req);
   if (opportunity) {
+    opportunity.notify_users = updateNotifyUsers(opportunity).toString();
+
     save(opportunity)
-      .then(opportunity => res.status(HTTP_CODES.OK).send(opportunity))
+      .then((opportunity) => {
+        let notify_users = updateNotifyUsers(opportunity);
+        if(notify_users.length>0){         
+          mail.sendNotifyMessages(notify_users, opportunity.name);
+        }
+
+        res.status(HTTP_CODES.OK).send(opportunity);
+      })
       .catch(next);
   } else {
     res.status(HTTP_CODES.BAD_REQUEST).send('Incorrect request');
@@ -80,6 +90,28 @@ module.exports.archiveAll = function(req, res, next) {
   });
 
   return res.status(HTTP_CODES.OK).send('Opportunities archived successfully.');
+};
+
+const updateNotifyUsers = function (opportunity) {
+  let notify_users_ary;
+  
+  if(!opportunity.notify_users)
+    notify_users_ary = [];
+  else
+    notify_users_ary = opportunity.notify_users.split(',');
+
+  if (opportunity.notify) {
+    if(notify_users_ary.indexOf(opportunity.notify_user_id) === -1){
+      notify_users_ary.push(opportunity.notify_user_id);
+    }
+  } else {
+    var index = notify_users_ary.indexOf(opportunity.notify_user_id);
+    if(index !== -1){
+      notify_users_ary.splice(index, 1);
+    }
+  }
+
+  return notify_users_ary;
 };
 
 // module.exports = {
@@ -140,7 +172,6 @@ module.exports.archiveAll = function(req, res, next) {
  //                  // sendMail(users, opportunity.name);
  //                }).catch(error => res.status(400).send(error));
  //            }
-
 
  //            return opportunity
  //              .update({

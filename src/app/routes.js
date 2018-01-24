@@ -54,11 +54,9 @@ module.exports = function (router) {
   router.delete('/rest/status/remove', statusController.remove);
   router.post('/rest/status/reorder', statusController.reorder);
 
-  router.post('/rest/reminder', reminderController.create);
-  router.get('/rest/reminder', reminderController.list);
-  router.put('/rest/reminder', reminderController.update);
-  router.delete('/rest/reminder', reminderController.remove);
-  router.get('/rest/reminder/one', reminderController.getOne);
+  router.get('/rest/reminder/all', reminderController.loadAll);
+  router.post('/rest/reminder/save', reminderController.save);
+  router.delete('/rest/reminder/remove', reminderController.remove);
 
   router.get('/rest/contact/all', contactController.loadAll);
   router.post('/rest/contact/save', contactController.save);

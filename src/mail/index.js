@@ -7,7 +7,7 @@ const env = require('../env');
 
 const model = require('../model');
 const mailModel = model.mailModel;
-
+const userModel = model.userModel;
 
 const createLetterObject = function (recipients, subject, textBody, htmlBody) {
   return {
@@ -47,6 +47,29 @@ module.exports.createAccountExpiredMessages = function (users, transaction) {
     }
   }));
   return mailModel.saveLetters(messages, transaction);
+};
+
+module.exports.sendNotifyMessages = function (users, opportunityName) {
+   userModel
+    .find({id: { $in: users }})
+    .then(users => {
+      _.forEach(users, (user => {
+        if(user.dataValues.email !== '') {
+console.log("=====================================");
+console.log("NOTIFY MESSAGE");
+console.log(user.dataValues.email);
+console.log(opportunity);
+console.log("=====================================");          
+          sendMessage([user.dataValues.email], 'Notify Email', null, '<span>The "'+opportunityName+'" opportunity has been updated.</span>');
+        }
+      }))
+    }).catch(error => console.log(error));
+};
+
+module.exports.sendReminderMessage = function (user, opportunityName) {
+  if (user.email) {
+    sendMessage([user.email], 'Reminder Email', null, '<span>Reminder for the "'+opportunityName+'" opportunity.</span>');
+  }
 };
 
 module.exports.sendMail = function () {
