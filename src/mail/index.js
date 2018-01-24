@@ -58,7 +58,7 @@ module.exports.sendNotifyMessages = function (users, opportunityName) {
 console.log("=====================================");
 console.log("NOTIFY MESSAGE");
 console.log(user.dataValues.email);
-console.log(opportunity);
+console.log(opportunityName);
 console.log("=====================================");          
           sendMessage([user.dataValues.email], 'Notify Email', null, '<span>The "'+opportunityName+'" opportunity has been updated.</span>');
         }
