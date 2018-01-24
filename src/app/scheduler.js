@@ -83,7 +83,7 @@ console.log("=====================================");
 
 module.exports.start = function () {
 console.log("=====================================");
-console.log("SCHEDULER", env.SCHEDULER_REMINDER_USER_CHECK_INTERVAL_IN_MINUTES);
+console.log("SCHEDULER", env);
 console.log("=====================================");  
   schedule.scheduleJob(`*/${env.SCHEDULER.TRIAL_PERIOD_CHECK_INTERVAL_IN_MINUTES} * * * *`, checkTrialPeriod);
   schedule.scheduleJob(`*/${env.SCHEDULER_REMINDER_USER_CHECK_INTERVAL_IN_MINUTES} * * * *`, checkReminderUsers);
