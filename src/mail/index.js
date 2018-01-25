@@ -55,11 +55,6 @@ module.exports.sendNotifyMessages = function (users, opportunityName) {
     .then(users => {
       _.forEach(users, (user => {
         if(user.dataValues.email !== '') {
-console.log("=====================================");
-console.log("NOTIFY MESSAGE");
-console.log(user.dataValues.email);
-console.log(opportunityName);
-console.log("=====================================");          
           sendMessage([user.dataValues.email], 'Notify Email', null, '<span>The "'+opportunityName+'" opportunity has been updated.</span>');
         }
       }))

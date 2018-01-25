@@ -55,24 +55,15 @@ const checkTrialPeriod = function () {
 
 const checkReminderUsers = function() {
   var current = new Date();
-console.log("=====================================");
-console.log("RESET");
-console.log("=====================================");
   reminderModel.find({
     reminder_date: {
       $lte: new Date(current.getTime() + 10 * 60 * 1000),
       $gte: current
     }
   }).then(reminders => {
-console.log("=====================================");
-console.log("REMINDERS", reminders);
-console.log("=====================================");   
     reminders.forEach(function(reminder){
       userModel.findById(reminder.user_id).then(user => {
         opportunityModel.findById(reminder.opportunity_id).then(opportunity => {
-console.log("=====================================");
-console.log(user.dataValues, opportunity.name);
-console.log("=====================================");
           mail.sendReminderMessage(user, opportunity.name);
         }).catch(error => console.log(error));
       }).catch(error => console.log(error));
@@ -82,9 +73,6 @@ console.log("=====================================");
 }
 
 module.exports.start = function () {
-console.log("=====================================");
-console.log("SCHEDULER", env.SCHEDULER.REMINDER_USER_CHECK_INTERVAL_IN_MINUTES);
-console.log("=====================================");  
   schedule.scheduleJob(`*/${env.SCHEDULER.TRIAL_PERIOD_CHECK_INTERVAL_IN_MINUTES} * * * *`, checkTrialPeriod);
   schedule.scheduleJob(`*/${env.SCHEDULER.REMINDER_USER_CHECK_INTERVAL_IN_MINUTES} * * * *`, checkReminderUsers);
 };
