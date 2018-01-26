@@ -36,8 +36,7 @@ module.exports = function (router) {
   router.post('/rest/administration/user/save', userController.save);
   router.post('/rest/administration/user/remove', userController.remove);
 
-  router.get('/rest/user/one', userController.getOne);
-  router.put('/rest/user', userController.update);
+  router.post('/rest/user/update', userController.update);
   router.post('/rest/user/avatar', userController.upload);
 
   router.post('/rest/dashboard/calculate', dashboardController.calculate);

@@ -61,7 +61,8 @@ const MODEL_ATTRIBUTES = {
   date_of_birth: {type: Sequelize.DATE},
   hire_date: {type: Sequelize.DATE},
   termination_date: {type: Sequelize.DATE},
-  wide_menu: {type: Sequelize.BOOLEAN, defaultValue: true}
+  wide_menu: {type: Sequelize.BOOLEAN, defaultValue: true},
+  image: {type: Sequelize.TEXT}
 };
 
 const MODEL_OPTIONS = {
@@ -78,7 +79,7 @@ const MODEL_OPTIONS = {
 class UserModel extends ContainerModel {
 
   constructor() {
-    super('users', ['id', 'username', 'email', 'firstName', 'lastName', 'displayName', 'active', 'department_id', 'wide_menu']);
+    super('users', ['id', 'username', 'email', 'firstName', 'lastName', 'displayName', 'active', 'department_id', 'wide_menu', 'image']);
     this.buildModel(MODEL_ATTRIBUTES, MODEL_OPTIONS);
     this.createBelongsToManyAssociation('roles', 'user_roles', 'user_id', roleModel.sequelizeModel, ['id']);
   }

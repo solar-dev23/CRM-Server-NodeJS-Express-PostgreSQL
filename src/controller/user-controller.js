@@ -230,21 +230,6 @@ module.exports.checkAlreadyExist = function (req, res, next) {
   }
 };
 
-module.exports.getOne = function(req, res, next) {
-  return userModel
-    .findById(req.query.id)
-    .then(user => {
-        if (!user) {
-          return res.status(400).send({
-            message: 'User Not Found',
-          });
-        }
-
-        return res.status(200).send(user)
-    })
-    .catch(error => res.status(400).send(error));
-};
-
 module.exports.update = function(req, res, next) {
   return userModel
     .findById(req.body.object.id)
@@ -269,7 +254,7 @@ module.exports.upload = function(req, res, next) {
   uploadPhoto(data, tempLocation, (imageUrl) => {
     console.log(imageUrl, 'image uploaded succesfully...');
     res.status(200).json({
-      image: imageUrl
+      url: imageUrl
     });
   });
 };
