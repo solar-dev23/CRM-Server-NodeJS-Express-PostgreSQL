@@ -99,7 +99,8 @@ module.exports.calculateV2 = async function (req, res, next) {
   for (let i = 0; i < users.length; i++) {
       let user = users[i];
       users[i] = {};
-      users[i].name = user.name;
+      users[i].id = user.id;
+      users[i].name = user.username;
       users[i].opportunities = [];
   }
   for (let i = 0; i < companies.length; i++) {
@@ -133,7 +134,7 @@ module.exports.calculateV2 = async function (req, res, next) {
     // User, Company, Statuses
     if (show_by == 'User') {
         for (var j = 0; j < users.length; j++) {
-            if (opportunity.contact == users[j].name) {
+            if (opportunity.user_id == users[j].id) {
                 users[j].opportunities.push(opportunity)
             }
         }
