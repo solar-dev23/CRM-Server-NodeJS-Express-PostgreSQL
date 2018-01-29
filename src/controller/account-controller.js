@@ -25,7 +25,7 @@ module.exports.save = function (req, res, next) {
       .then(account => res.status(HTTP_CODES.OK).send(account))
       .catch(next);
   } else {
-    res.status(HTTP_CODES.BAD_REQUEST).send('Incorrect request');
+    res.status(HTTP_CODES.BAD_REQUEST).send({message: 'Incorrect request'});
   }
 }
 
@@ -37,6 +37,6 @@ module.exports.remove = function (req, res, next) {
       .then(() => res.status(HTTP_CODES.OK).send())
       .catch(next);
   } else {
-    res.status(HTTP_CODES.BAD_REQUEST).send('Incorrect request');
+    res.status(HTTP_CODES.BAD_REQUEST).send({message: 'Incorrect request'});
   }
 };

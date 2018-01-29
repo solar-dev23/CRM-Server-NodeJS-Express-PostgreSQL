@@ -23,10 +23,10 @@ const BadRequestError = core.error.BadRequestError;
 
 var fs = require('graceful-fs');
 const aws = {
-  accessKeyId: 'AKIAJQV4F6L3OKVG4BBA',
-  secretAccessKey: '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'
+  accessKeyId: env.AWS.ACCESS_KEY_ID,
+  secretAccessKey: env.AWS.SECRET_ACCESS_KEY
 }
-const BUCKET_NAME = 'mateam_crm';
+const BUCKET_NAME = env.AWS.BUCKET_NAME;
 var s3Client = require('s3').createClient({
   s3Options: aws
 });
