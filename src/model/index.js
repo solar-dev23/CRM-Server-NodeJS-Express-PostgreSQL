@@ -16,6 +16,7 @@ const contactModel = require('./contact-model');
 const accountModel = require('./account-model');
 const socialNetworkModel = require('./social-network-model');
 const contactAccountsModel = require('./contact-accounts-model');
+const addressModel = require('./address-model');
 
 const database = require('../database');
 const sequelize = database.sequelize;
@@ -50,5 +51,6 @@ module.exports = {
   contactModel,
   accountModel,
   socialNetworkModel,
-  contactAccountsModel
+  contactAccountsModel,
+  addressModel
 };

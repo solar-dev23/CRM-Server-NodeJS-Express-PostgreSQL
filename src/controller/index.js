@@ -10,6 +10,7 @@ const statusController = require('./status-controller');
 const reminderController = require('./reminder-controller');
 const contactController = require('./contact-controller');
 const accountController = require('./account-controller');
+const addressController = require('./address-controller');
 
 const init = function () {
   return accessController.init();
@@ -26,5 +27,6 @@ module.exports = {
   statusController,
   reminderController,
   contactController,
-  accountController
+  accountController,
+  addressController
 };

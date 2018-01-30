@@ -10,6 +10,7 @@ const statusController = controller.statusController;
 const reminderController = controller.reminderController;
 const contactController = controller.contactController;
 const accountController = controller.accountController;
+const addressController = controller.addressController;
 
 const core = require('../core');
 const constants = core.constants;
@@ -64,4 +65,9 @@ module.exports = function (router) {
   router.get('/rest/account/all', accountController.loadAll);
   router.post('/rest/account/save', accountController.save);
   router.delete('/rest/account/remove', accountController.remove);
+
+  router.get('/rest/address/all', addressController.loadAll);
+  router.post('/rest/address/save', addressController.save);
+  router.delete('/rest/address/remove', addressController.remove);
+  router.get('/rest/address/:id', addressController.getById);
 };
