@@ -75,7 +75,9 @@ module.exports.save = function (req, res, next) {
     user.roles = !user.roles ? getDefaultRoles() : user.roles;
     save(user, accessController.getAuthData(req))
       .then(user => res.status(HTTP_CODES.OK).send(user))
-      .catch(next);
+      .catch(error => {
+        res.status(HTTP_CODES.BAD_REQUEST).send(error.errors[0]);
+      });
   } else {
     res.status(HTTP_CODES.BAD_REQUEST).send('Incorrect request');
   }

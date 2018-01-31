@@ -68,7 +68,9 @@ module.exports.save = function (req, res, next) {
 
         res.status(HTTP_CODES.OK).send(opportunity);
       })
-      .catch(next);
+      .catch(error => {
+        res.status(HTTP_CODES.BAD_REQUEST).send(error.errors[0]);
+      });
   } else {
     res.status(HTTP_CODES.BAD_REQUEST).send({message:'Incorrect request'});
   }

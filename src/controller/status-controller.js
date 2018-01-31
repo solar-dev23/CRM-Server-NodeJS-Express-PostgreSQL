@@ -73,9 +73,6 @@ module.exports.save = function (req, res, next) {
     save(status)
       .then(status => res.status(HTTP_CODES.OK).send(status))
       .catch(error => {
-console.log("========================================");
-console.log(error.errors[0]);
-console.log("========================================");
         res.status(HTTP_CODES.BAD_REQUEST).send(error.errors[0]);
       });
   } else {
