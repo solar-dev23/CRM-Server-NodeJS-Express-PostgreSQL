@@ -76,7 +76,7 @@ module.exports.save = function (req, res, next) {
     save(user, accessController.getAuthData(req))
       .then(user => res.status(HTTP_CODES.OK).send(user))
       .catch(error => {
-        res.status(HTTP_CODES.BAD_REQUEST).send(error.errors[0]);
+        res.status(HTTP_CODES.BAD_REQUEST).send(error);
       });
   } else {
     res.status(HTTP_CODES.BAD_REQUEST).send('Incorrect request');
