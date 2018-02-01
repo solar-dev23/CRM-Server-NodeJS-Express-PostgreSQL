@@ -18,7 +18,7 @@ const MODEL_ATTRIBUTES = {
 
 class SocialNetworkModel extends Model {
   constructor() {
-    super('social-networks');
+    super('social_networks');
     this.buildModel(MODEL_ATTRIBUTES);
   }
 }
