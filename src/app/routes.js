@@ -11,6 +11,8 @@ const reminderController = controller.reminderController;
 const contactController = controller.contactController;
 const accountController = controller.accountController;
 const addressController = controller.addressController;
+const roleController = controller.roleController;
+const socialNetworkController = controller.socialNetworkController;
 
 const core = require('../core');
 const constants = core.constants;
@@ -70,4 +72,13 @@ module.exports = function (router) {
   router.post('/rest/address/save', addressController.save);
   router.delete('/rest/address/remove', addressController.remove);
   router.get('/rest/address/:id', addressController.getById);
+
+  router.get('/rest/role/all', roleController.loadAll);
+  router.post('/rest/role/save', roleController.save);
+  router.delete('/rest/role/remove', roleController.remove);
+
+  router.get('/rest/socialNetwork/all', socialNetworkController.loadAll);
+  router.post('/rest/socialNetwork/save', socialNetworkController.save);
+  router.delete('/rest/socialNetwork/remove', socialNetworkController.remove);
+  router.get('/rest/socialNetwork/:id', socialNetworkController.getById);
 };
