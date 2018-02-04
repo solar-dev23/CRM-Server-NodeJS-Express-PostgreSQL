@@ -67,6 +67,7 @@ module.exports = function (router) {
   router.get('/rest/account/all', accountController.loadAll);
   router.post('/rest/account/save', accountController.save);
   router.delete('/rest/account/remove', accountController.remove);
+  router.post('/rest/account/upload', accountController.upload);
 
   router.get('/rest/address/all', addressController.loadAll);
   router.post('/rest/address/save', addressController.save);

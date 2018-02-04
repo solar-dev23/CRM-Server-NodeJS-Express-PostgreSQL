@@ -15,7 +15,6 @@ const MODEL_ATTRIBUTES = {
   displayName: {field: 'display_name', type: Sequelize.TEXT},
   account_type: {type: Sequelize.STRING},
   social_network_id: {type: Sequelize.UUID},
-  address_id: {type: Sequelize.UUID},
   prefered_payment_method: {type: Sequelize.STRING},
   prefered_delivery_method: {type: Sequelize.STRING},
   terms: {type: Sequelize.STRING},
