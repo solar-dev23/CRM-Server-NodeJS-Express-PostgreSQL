@@ -35,7 +35,8 @@ const MODEL_ATTRIBUTES = {
   fax: {type: Sequelize.STRING},
   mobile: {type: Sequelize.STRING},
   social_network_id: {type: Sequelize.UUID},
-  address_id: {type: Sequelize.UUID}
+  address_id: {type: Sequelize.UUID},
+  department_id: {type: Sequelize.UUID}
 };
 
 class ContactModel extends ContainerModel {

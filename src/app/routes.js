@@ -13,6 +13,7 @@ const accountController = controller.accountController;
 const addressController = controller.addressController;
 const roleController = controller.roleController;
 const socialNetworkController = controller.socialNetworkController;
+const departmentController = controller.departmentController;
 
 const core = require('../core');
 const constants = core.constants;
@@ -82,4 +83,9 @@ module.exports = function (router) {
   router.post('/rest/socialNetwork/save', socialNetworkController.save);
   router.delete('/rest/socialNetwork/remove', socialNetworkController.remove);
   router.get('/rest/socialNetwork/:id', socialNetworkController.getById);
+
+  router.get('/rest/department/all', departmentController.loadAll);
+  router.post('/rest/department/save', departmentController.save);
+  router.delete('/rest/department/remove', departmentController.remove);
+  router.get('/rest/department/:id', departmentController.getById);
 };

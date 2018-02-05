@@ -13,6 +13,7 @@ const accountController = require('./account-controller');
 const addressController = require('./address-controller');
 const roleController = require('./role-controller');
 const socialNetworkController = require('./social-network-controller');
+const departmentController = require('./department-controller');
 
 const init = function () {
   return accessController.init();
@@ -32,5 +33,6 @@ module.exports = {
   accountController,
   addressController,
   roleController,
-  socialNetworkController
+  socialNetworkController,
+  departmentController
 };
