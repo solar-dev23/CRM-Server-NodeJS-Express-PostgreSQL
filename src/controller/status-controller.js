@@ -42,7 +42,6 @@ const remove = async function(opportunities) {
       }else {
         // Update status_id for archived opportunities
         let archivedStatus = await statusModel.findOne({name: 'Archived'});
-        console.log(archivedStatus);
 
         await opportunityModel
           .findById(opportunity.id)
