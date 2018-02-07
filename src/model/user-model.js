@@ -132,7 +132,7 @@ class UserModel extends ContainerModel {
     user.id = user.id ? user.id : undefined;
     user.username = user.username ? user.username.trim() : '';
     user.email = user.email ? user.email.trim() : '';
-    user.displayName = `${user.firstName} ${user.lastName}`;
+    // user.displayName = `${user.firstName} ${user.lastName}`;
     user.employeeNumber = user.employeeNumber || null;
 
     return new Promise((resolve, reject) => {
