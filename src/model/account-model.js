@@ -19,7 +19,7 @@ const MODEL_ATTRIBUTES = {
   prefered_delivery_method: {type: Sequelize.STRING},
   terms: {type: Sequelize.STRING},
   number_of_employees: {type: Sequelize.INTEGER},
-  annual_revenue: {type: Sequelize.STRING},
+  annual_revenue: {type: Sequelize.INTEGER},
   lead_source: {type: Sequelize.STRING},
   lead_rating: {type: Sequelize.INTEGER, defaultValue: 3},
   notes: {type: Sequelize.STRING},

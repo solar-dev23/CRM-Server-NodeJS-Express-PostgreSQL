@@ -41,7 +41,7 @@ const MODEL_ATTRIBUTES = {
   },
   firstName: {type: Sequelize.TEXT, field: 'first_name', allowNull: false, validate: {len: 1}},
   lastName: {field: 'last_name', type: Sequelize.TEXT, allowNull: false, validate: {len: 1}},
-  displayName: {field: 'display_name', type: Sequelize.TEXT, allowNull: false},
+  displayName: {field: 'display_name', type: Sequelize.TEXT},
   password: {type: Sequelize.TEXT, allowNull: false},
   company: {type: Sequelize.TEXT},
   jobTitle: {field: 'job_title', type: Sequelize.TEXT},
